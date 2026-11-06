@@ -1,0 +1,22 @@
+esp32c5-lp: scheletro per esp-pacs (da estrarre nella radice del repo)
+
+  tar xzf esp32c5-lp-skeleton.tar.gz --strip-components=1
+  git apply esp-pacs-xtask-esp32c5-lp.patch        # Cargo.toml radice + xtask
+  # (per rigenerare il base SVD:)
+  python3 make_esp32c5_lp_base_svd.py esp32c5/svd/esp32c5.base.svd esp32c5-lp/svd/esp32c5-lp.base.svd
+
+  cargo xtask patch esp32c5      # PMU viene copiata da esp32c5/svd/esp32c5.svd
+  cargo xtask patch esp32c5-lp
+  cargo xtask generate esp32c5-lp
+  cargo xtask build esp32c5-lp
+
+DA VERIFICARE (non verificabile offline):
+ 1. Numeri interrupt del core LP del C5: copiati dal C6-LP (LP_IO=0, LP_I2C=1,
+    LP_UART=2, LP_TIMER=3, PMU=5). Fonte: TRM C5 / header ESP-IDF.
+    Modificare LP_INTERRUPTS in make_esp32c5_lp_base_svd.py e svd/patches/_pmu.yml;
+    device.x viene riscritto da `xtask generate`.
+ 2. Le patch YAML non sono state eseguite con svdtools: aspettati qualche errore
+    di path/registro al primo `xtask patch`.
+ 3. LPPERI mantiene il nome del C5 HP (nel C6-LP si chiama LP_PERI).
+ 4. LP_WDT / LP_UART: non applicate le rinomine del crate HP, per restare vicino al C6-LP.
+ 5. CI in .github/ non toccata (non era nel tar).

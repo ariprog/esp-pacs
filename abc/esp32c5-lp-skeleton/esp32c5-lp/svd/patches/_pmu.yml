@@ -1,0 +1,6 @@
+PMU:
+  _modify:
+    _interrupts:
+      PMU:
+        name: PMU_LP_INT
+        value: 5   # UNVERIFIED for C5: taken from esp32c6-lp, check TRM / ESP-IDF

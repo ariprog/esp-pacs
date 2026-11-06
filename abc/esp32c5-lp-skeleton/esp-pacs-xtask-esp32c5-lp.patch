@@ -1,0 +1,42 @@
+diff --git a/Cargo.toml b/Cargo.toml
+--- a/Cargo.toml	2026-11-02 12:29:43.160594948 +0000
++++ b/Cargo.toml	2026-11-02 12:29:43.170038773 +0000
+@@ -6,6 +6,7 @@
+     "esp32c2",
+     "esp32c3",
+     "esp32c5",
++    "esp32c5-lp",
+     "esp32c6",
+     "esp32c61",
+     "esp32c6-lp",
+diff --git a/xtask/src/main.rs b/xtask/src/main.rs
+--- a/xtask/src/main.rs	2026-11-02 12:29:43.164164794 +0000
++++ b/xtask/src/main.rs	2026-11-02 12:29:43.173352238 +0000
+@@ -29,6 +29,7 @@
+     Esp32c2,
+     Esp32c3,
+     Esp32c5,
++    Esp32c5Lp,
+     Esp32c6,
+     Esp32c61,
+     Esp32c6Lp,
+@@ -273,7 +274,7 @@
+     config.max_cluster_size = true;
+     config.impl_defmt = Some("defmt".into());
+     config.skip_peripherals_struct = match chip {
+-        Chip::Esp32s3Ulp | Chip::Esp32s2Ulp | Chip::Esp32c6Lp => false,
++        Chip::Esp32s3Ulp | Chip::Esp32s2Ulp | Chip::Esp32c5Lp | Chip::Esp32c6Lp => false,
+         _ => true,
+     };
+ 
+diff --git a/xtask/src/regdesc/model.rs b/xtask/src/regdesc/model.rs
+--- a/xtask/src/regdesc/model.rs	2026-11-02 12:29:43.167232012 +0000
++++ b/xtask/src/regdesc/model.rs	2026-11-02 12:29:43.175503978 +0000
+@@ -347,6 +347,7 @@
+                 "32-bit RISC-V MCU & 2.4 and 5 GHz Wi-Fi 6 & Bluetooth 5 (LE) & IEEE 802.15.4"
+             }
+             "ESP32-C6" => "32-bit RISC-V MCU & 2.4 GHz Wi-Fi 6 & Bluetooth 5 (LE) & IEEE 802.15.4",
++            "ESP32-C5-LP" => "32-bit RISC-V MCU",
+             "ESP32-C6-LP" => "32-bit RISC-V MCU",
+             "ESP32-C61" => "32-bit RISC-V MCU & 2.4 GHz Wi-Fi 6 & Bluetooth 5 (LE)",
+             "ESP32-H2" => "32-bit RISC-V MCU & Bluetooth 5 (LE) & IEEE 802.15.4",

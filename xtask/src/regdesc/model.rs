@@ -347,6 +347,7 @@ impl ChipInfo {
                 "32-bit RISC-V MCU & 2.4 and 5 GHz Wi-Fi 6 & Bluetooth 5 (LE) & IEEE 802.15.4"
             }
             "ESP32-C6" => "32-bit RISC-V MCU & 2.4 GHz Wi-Fi 6 & Bluetooth 5 (LE) & IEEE 802.15.4",
+            "ESP32-C5-LP" => "32-bit RISC-V MCU",
             "ESP32-C6-LP" => "32-bit RISC-V MCU",
             "ESP32-C61" => "32-bit RISC-V MCU & 2.4 GHz Wi-Fi 6 & Bluetooth 5 (LE)",
             "ESP32-H2" => "32-bit RISC-V MCU & Bluetooth 5 (LE) & IEEE 802.15.4",

@@ -1,0 +1,19 @@
+PMU:
+  # In the patched esp32c5.svd, PMU.DATE is derived from AES.DATE, which does
+  # not exist in this PAC: replace it with a standalone register.
+  _delete:
+    - DATE
+
+  _add:
+    DATE:
+      description: PMU version control register
+      addressOffset: 0x1A8
+      size: 0x20
+      access: read-write
+      resetValue: 0x2311290
+
+  _modify:
+    _interrupts:
+      PMU:
+        name: PMU_LP_INT
+        value: 5   # UNVERIFIED for C5: taken from esp32c6-lp, check TRM / ESP-IDF

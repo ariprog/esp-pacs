@@ -1,0 +1,89 @@
+_svd: "../esp32c5-lp.base.svd"
+
+_include:
+  - ./_lp_io.yml
+  - ./_lp_uart.yml
+  - ./_pmu.yml
+
+LP_I2C0:
+  _strip: "I2C_"
+  "*":
+    _strip: "I2C_"
+  _modify:
+    INT_STATUS:
+      name: INT_ST
+  DATA:
+    _modify:
+      FIFO_RDATA:
+        access: read-write
+  COMD?:
+    _modify:
+      COMMAND?:
+        name: COMMAND
+      COMMAND?_DONE:
+        name: COMMAND_DONE
+  _array:
+    COMD?: {}
+  _include: ../../../common_patches/int_strip.yaml
+
+"LP_ANA,LP_UART,LP_WDT":
+  _include: ../../../common_patches/int_strip.yaml
+
+LP_ANA:
+  _include: ../../../common_patches/lpana_int_strip.yaml
+
+LP_TEE:
+  _include: ../../../common_patches/tee.yaml
+
+LP_TIMER:
+  _include: ../../../common_patches/lptim_int_strip.yaml
+
+# Same patches as the HP esp32c5 crate applies to these (identical) blocks
+LP_APM0:
+  _cluster:
+    M%s:
+      dimIncrement: 16
+      M?_STATUS:
+        name: STATUS
+        _strip: M0_
+      M?_STATUS_CLR:
+        name: STATUS_CLR
+        _strip: M0_
+      M?_EXCEPTION_INFO0:
+        name: EXCEPTION_INFO0
+        _strip: M0_
+      M?_EXCEPTION_INFO1:
+        name: EXCEPTION_INFO1
+        _strip: M0_
+
+  FUNC_CTRL:
+    _array:
+      M?_FUNC_EN: {}
+  INT_EN:
+    _array:
+      M?_APM_INT_EN:
+        name: M%s_APM
+
+LPPERI:
+  _delete:
+    - RNG_DATA
+  _modify:
+    RNG_DATA_SYNC:
+      name: RNG_DATA
+  RNG_CFG:
+    RTC_TIMER_EN:
+      DISABLE: [0, "Disable rng xor rtc timer"]
+
+LP_AON:
+  # Make sure the STORE registers are the same type
+  STORE0:
+    _modify:
+      "LP_AON_STORE0":
+        name: "DATA"
+  _derive:
+    STORE[1-9]:
+      _from: STORE0
+
+_copy:
+  PMU:
+    from: ../../../esp32c5/svd/esp32c5.svd:PMU

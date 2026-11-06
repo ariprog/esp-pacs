@@ -6,6 +6,7 @@ exclude  = [
     "esp32c2",
     "esp32c3",
     "esp32c5",
+    "esp32c5-lp",
     "esp32c6",
     "esp32c61",
     "esp32c6-lp",
